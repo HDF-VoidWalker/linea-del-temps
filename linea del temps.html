@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evolució dels sistemes operatius</title>
+<style>
+:root{--bg:#f7f8fc;--ink:#171b2d;--muted:#687083;--line:#d8ddea;--ms:#3978ff;--ap:#222;--li:#e59635;--accent:#705cf6}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+header{padding:52px 6vw 35px;background:#fff;border-bottom:1px solid #e7e9f0}
+.top{max-width:1200px;margin:auto}.label{display:inline-block;background:#eeebff;color:#5b49dc;padding:7px 11px;border-radius:20px;font-size:12px;font-weight:bold;letter-spacing:.4px}
+h1{font-size:clamp(35px,5vw,64px);margin:15px 0 8px;letter-spacing:-2px}.intro{max-width:850px;color:var(--muted);font-size:17px;line-height:1.55}
+.filters{display:flex;gap:9px;flex-wrap:wrap;margin-top:25px}.filter{border:1px solid #dfe3ec;background:#fff;padding:10px 16px;border-radius:12px;font-weight:bold;cursor:pointer}.filter.active{background:#20263a;color:#fff;border-color:#20263a}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:20px;color:var(--muted);font-size:13px}.legend span:before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;background:currentColor}.legend .m{color:var(--ms)}.legend .a{color:var(--ap)}.legend .l{color:var(--li)}
+main{max-width:1400px;margin:auto;padding:28px 0 65px}.notice{margin:0 6vw 18px;padding:12px 15px;background:#fff;border:1px solid #e5e8f0;border-radius:12px;color:var(--muted);font-size:13px}
+.scroll{overflow-x:auto;padding:30px 6vw 70px}.timeline{display:flex;gap:24px;min-width:max-content;padding:125px 25px;position:relative}.timeline:before{content:"";position:absolute;left:0;right:0;top:50%;height:4px;background:var(--line);border-radius:10px}
+.event{width:245px;position:relative;z-index:1}.event.up{transform:translateY(-118px)}.event.down{transform:translateY(118px)}
+.event .point{position:absolute;left:50%;width:16px;height:16px;border:4px solid var(--bg);border-radius:50%;transform:translateX(-50%);background:currentColor;box-shadow:0 0 0 2px currentColor}
+.event.up .point{bottom:-38px}.event.down .point{top:-38px}
+.card{background:#fff;border:1px solid #e5e8ef;border-radius:17px;padding:17px;box-shadow:0 9px 24px rgba(30,40,70,.08);cursor:pointer;transition:.2s}.card:hover{transform:translateY(-5px);box-shadow:0 15px 32px rgba(30,40,70,.15)}
+.year{font-size:13px;color:var(--muted);font-weight:bold}.family{display:inline-block;margin-top:8px;padding:5px 8px;border-radius:7px;background:#f0f2f7;font-size:10px;font-weight:bold;text-transform:uppercase}.card h2{font-size:19px;margin:9px 0 6px}.summary{font-size:12px;color:var(--muted);line-height:1.4}.tag{display:inline-block;margin-top:10px;font-size:10px;padding:4px 7px;border-radius:6px;background:#f2f3f7;font-weight:bold}
+.ms{color:var(--ms)}.apple{color:var(--ap)}.linux{color:var(--li)}
+.section{padding:0 6vw}.section h2{font-size:28px}.columns{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.box{background:#fff;border:1px solid #e5e8ef;border-radius:18px;padding:20px}.box h3{margin-top:0}.box p{color:var(--muted);font-size:14px;line-height:1.5}
+.modal{display:none;position:fixed;inset:0;background:rgba(13,17,30,.62);align-items:center;justify-content:center;padding:18px;z-index:10}.modal.show{display:flex}.panel{width:min(720px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:24px;padding:28px}.close{float:right;border:0;border-radius:50%;width:38px;height:38px;background:#f0f2f6;font-size:22px;cursor:pointer}.panel .small{color:var(--muted);font-size:13px;font-weight:bold}.panel h2{font-size:34px;margin:7px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:22px}.spec{background:#f6f7fa;border-radius:13px;padding:14px}.spec b{display:block;color:#7b8495;text-transform:uppercase;font-size:10px;margin-bottom:5px}
+footer{background:#20263a;color:#dce1ed;padding:28px 6vw;font-size:12px;line-height:1.5}
+@media(max-width:760px){.columns{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.event{width:210px}}
+</style>
+</head>
+<body>
+<header>
+<div class="top">
+<span class="label">TIM3B-MP0222 sistemes operatius monlloc · Quan Zhou</span>
+<h1>Evolució sistemes operatius</h1>
+<p class="intro">Linea del temps dels primers sistemes de Microsoft, Apple i Linux fins a les versions actuals. </p>
+<div class="filters">
+<button class="filter active" data-f="all">Tots</button><button class="filter" data-f="Microsoft">Microsoft</button><button class="filter" data-f="Apple">Apple</button><button class="filter" data-f="Linux">Linux</button>
+</div>
+<div class="legend"><span class="m">Microsoft</span><span class="a">Apple</span><span class="l">Linux</span></div>
+</div>
+</header>
+
+<main>
+<div class="notice">💡 Desplaça't cap als costats. Fes clic sobre qualsevol versió per consultar totes les dades demanades a l'activitat.</div>
+<div class="scroll"><div id="timeline" class="timeline"></div></div>
+
+<section class="section">
+<h2>Les tres famílies</h2>
+<div class="columns">
+<div class="box"><h3 class="ms">Microsoft</h3><p>Des de MS-DOS i les primeres versions de Windows fins a Windows 11. L'evolució passa de sistemes molt limitats a plataformes de 64 bits i maquinari modern.</p></div>
+<div class="box"><h3>Apple</h3><p>De System 1 i el Macintosh clàssic a Mac OS X i macOS. El canvi a Mac OS X va portar una base Unix i una arquitectura més moderna.</p></div>
+<div class="box"><h3 class="linux">Linux</h3><p>El nucli Linux va aparèixer el 1991. Per representar una família utilitzable en ordinadors personals, també es mostren versions d'Ubuntu, una distribució GNU/Linux.</p></div>
+</div>
+</section>
+</main>
+
+
+<div id="modal" class="modal"><div class="panel">
+<button class="close" onclick="closeModal()">×</button>
+<div id="mf" class="small"></div><h2 id="mn"></h2><div id="my" class="small"></div>
+<div id="grid" class="grid"></div>
+</div></div>
+
+<script>
+const items=[
+[1981,"Microsoft","MS-DOS 1.0","16 bits","Intel 8086/8088","128 KB","160 KB","Monotasca","Monousuari"],
+[1984,"Apple","System 1","16 bits","Motorola 68000","128 KB","400 KB","Monotasca","Monousuari"],
+[1991,"Linux","Linux 0.01","32 bits","Intel 80386","~2 MB","~40 MB","Multitasca","Multiusuari"],
+[1992,"Microsoft","Windows 3.1","16 bits","80286 o superior","1 MB","6–15 MB","Multitasca cooperativa","Monousuari"],
+[1995,"Microsoft","Windows 95","32 bits","Intel 80386DX o superior","4 MB","50–55 MB","Multitasca","Monousuari"],
+[1997,"Apple","Mac OS 8","32 bits","PowerPC o 68040","16 MB","120 MB","Multitasca","Monousuari"],
+[2001,"Microsoft","Windows XP","32 / 64 bits","233 MHz o superior","64 MB","1,5 GB","Multitasca","Multiusuari"],
+[2001,"Apple","Mac OS X 10.0","32 bits","PowerPC G3","128 MB","1,5 GB","Multitasca","Multiusuari"],
+[2004,"Linux","Ubuntu 4.10","32 bits","Intel x86","64 MB","500 MB","Multitasca","Multiusuari"],
+[2009,"Microsoft","Windows 7","32 / 64 bits","1 GHz","1 GB (32) / 2 GB (64)","16 / 20 GB","Multitasca","Multiusuari"],
+[2011,"Apple","OS X Lion 10.7","64 bits","Intel Core 2 Duo","2 GB","7 GB","Multitasca","Multiusuari"],
+[2014,"Linux","Ubuntu 14.04 LTS","32 / 64 bits","1 GHz o superior","1 GB","5 GB","Multitasca","Multiusuari"],
+[2015,"Microsoft","Windows 10","32 / 64 bits","1 GHz","1 GB (32) / 2 GB (64)","32 GB","Multitasca","Multiusuari"],
+[2020,"Apple","macOS Big Sur 11","64 bits","Intel o Apple Silicon","4 GB","35,5 GB","Multitasca","Multiusuari"],
+[2021,"Microsoft","Windows 11","64 bits","1 GHz, 2 nuclis, processador compatible","4 GB","64 GB","Multitasca","Multiusuari"],
+[2022,"Apple","macOS Ventura 13","64 bits","Intel o Apple Silicon","4 GB","~35 GB","Multitasca","Multiusuari"],
+[2024,"Linux","Ubuntu 24.04 LTS","64 bits / amd64 (entre altres)","2 GHz dual-core","4 GB","25 GB","Multitasca","Multiusuari"],
+[2026,"Linux","Ubuntu 26.04 LTS","64 bits / amd64 (entre altres)","2 GHz dual-core","4 GB","25 GB","Multitasca","Multiusuari"],
+[2026,"Apple","macOS actual","64 bits","Apple Silicon / Intel segons model compatible","4 GB o més","Variable segons versió","Multitasca","Multiusuari"],
+[2026,"Microsoft","Windows 11 actual","64 bits","1 GHz+, 2 nuclis, CPU compatible","4 GB","64 GB","Multitasca","Multiusuari"]
+];
+
+const timeline=document.getElementById("timeline");
+function render(filter="all"){
+ timeline.innerHTML="";
+ items.filter(x=>filter==="all"||x[1]===filter).forEach((x,i)=>{
+  let c=x[1]==="Microsoft"?"ms":x[1]==="Apple"?"apple":"linux";
+  let el=document.createElement("div");el.className="event "+(i%2?"down":"up");
+  el.style.color=`var(--${c==="ms"?"ms":c==="apple"?"ap":"li"})`;
+  el.innerHTML=`<span class="point"></span><div class="card"><div class="year">${x[0]}</div><div class="family">${x[1]}</div><h2>${x[2]}</h2><div class="summary">${x[3]} · ${x[7]}</div><span class="tag">Veure dades →</span></div>`;
+  el.querySelector(".card").onclick=()=>openModal(x);
+  timeline.appendChild(el);
+ });
+}
+document.querySelectorAll(".filter").forEach(b=>b.onclick=()=>{document.querySelectorAll(".filter").forEach(x=>x.classList.remove("active"));b.classList.add("active");render(b.dataset.f)});
+function openModal(x){
+ document.getElementById("mf").textContent=x[1].toUpperCase();
+ document.getElementById("mn").textContent=x[2];
+ document.getElementById("my").textContent="Any destacat: "+x[0];
+ const names=["Arquitectura","CPU","Memòria RAM","Emmagatzematge","Tipus de tasca","Tipus d'usuari"];
+ const vals=[x[3],x[4],x[5],x[6],x[7],x[8]];
+ document.getElementById("grid").innerHTML=names.map((n,i)=>`<div class="spec"><b>${n}</b>${vals[i]}</div>`).join("");
+ document.getElementById("modal").classList.add("show");
+}
+function closeModal(){document.getElementById("modal").classList.remove("show")}
+document.getElementById("modal").onclick=e=>{if(e.target.id==="modal")closeModal()}
+render();
+</script>
+</body>
+</html>
